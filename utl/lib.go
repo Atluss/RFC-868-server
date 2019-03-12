@@ -86,10 +86,13 @@ func DialToTimeServer(address string) (string, error) {
 		return "", fmt.Errorf("error: %s", err)
 	}
 
+	buf := make([]byte, 4)
+
 	if status, _, err := bufio.NewReader(conn).ReadLine(); err != nil {
 		return "", err
 	} else {
-		str := fmt.Sprintf("respond: %d", REFC868TimeToUnix(binary.BigEndian.Uint32(status)))
+		copy(buf, status)
+		str := fmt.Sprintf("respond: %d", REFC868TimeToUnix(binary.BigEndian.Uint32(buf)))
 		return str, nil
 	}
 }

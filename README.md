@@ -7,14 +7,17 @@ This program run time protocol server as described in [RFC 868](https://tools.ie
 
 How to run
 -----------------------------------
-`server -p 11037` arguments is necessary
+`server -p 11037` in server folder arguments is necessary. Server runs in localhost
 
 How to test server
 -----------------------------------
-In terminal: `printf "%d\n" "0x$(nc time.nist.gov 37 | xxd -p)"` where `time.nist.gov 37` is address and server port.
+`printf "%d\n" "0x$(nc time.nist.gov 37 | xxd -p)"` - in terminal where `time.nist.gov 37` is address and server port.
 
 How to run client
 -----------------------------------
-`client localhost 11037` arguments is necessary
+`client localhost 11037` in client folder arguments is necessary
 
-[How to format this file](http://webdesign.ru.net/article/pravila-oformleniya-fayla-readmemd-na-github.html)
+Build
+-----------------------------------
+* server /server/: go build server.go
+* client /client/: go build client.go
