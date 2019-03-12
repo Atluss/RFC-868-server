@@ -15,12 +15,12 @@ func TestAlphaOnly(t *testing.T) {
 
 func TestCheckServerSettings(t *testing.T) {
 
-	args :=  map[uint][]string{
-		0 : {"asd", "asd"},
-		1 : {"-p", "11037"},
-		2 : {"asd", "11037"},
-		3 : {"-p", "as11037d"},
-		4 : {"-p", "asd"},
+	args := map[uint][]string{
+		0: {"asd", "asd"},
+		1: {"-p", "11037"},
+		2: {"asd", "11037"},
+		3: {"-p", "as11037d"},
+		4: {"-p", "asd"},
 	}
 
 	for _, m := range args {
@@ -35,4 +35,13 @@ func TestCheckServerSettings(t *testing.T) {
 
 func TestRFC868Time(t *testing.T) {
 	log.Println(RFC868Time())
+}
+
+func TestREFC868TimeToUnix(t *testing.T) {
+	log.Println(REFC868TimeToUnix(3761408855))
+}
+
+func TestDialToTimeServer(t *testing.T) {
+	address := "time.nist.gov:37"
+	DialToTimeServer(address)
 }

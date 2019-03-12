@@ -1,7 +1,11 @@
 package utl
 
 import (
+	"bufio"
+	"encoding/binary"
 	"fmt"
+	"log"
+	"net"
 	"strings"
 	"time"
 )
@@ -11,6 +15,9 @@ const (
 	ConnHost = "localhost"
 	ConnType = "tcp"
 )
+
+var then1900 = time.Date(1900, time.January, 1, 0, 0, 1, 0, time.UTC)
+var then1970 = time.Date(1970, time.January, 1, 0, 0, 1, 0, time.UTC)
 
 // DigitalOnly check symbols for a letters
 func DigitalOnly(s string) bool {
@@ -22,6 +29,7 @@ func DigitalOnly(s string) bool {
 	return true
 }
 
+// CheckServerSettings when run server, example: client -p 11037
 func CheckServerSettings(args []string) (string, error) {
 
 	if len(args) != 2 {
@@ -39,9 +47,49 @@ func CheckServerSettings(args []string) (string, error) {
 	return args[1], nil
 }
 
+// CheckClientSettings when run client example: client localhost 11037
+func CheckClientSettings(args []string) (string, string, error) {
+	if len(args) != 2 {
+		return "", "", fmt.Errorf("error: please input server address and port, example: 'client localhost 11037'")
+	}
+
+	if args[0] == "" {
+		return "", "", fmt.Errorf("error: please input correct address argument, example: 'client localhost 11037'")
+	}
+
+	if !DigitalOnly(args[1]) {
+		return "", "", fmt.Errorf("error: please input correct argument port number, client: 'server localhost 11037'")
+	}
+
+	return args[0], args[1], nil
+}
+
+// RFC868Time seconds from 1 jun 1970
 func RFC868Time() uint32 {
-	then := time.Date(1900, time.January, 1, 0, 0, 1, 0, time.UTC)
 	now := time.Now()
-	diff := now.Sub(then)
+	diff := now.Sub(then1900)
 	return uint32(diff.Seconds())
+}
+
+// REFC868TimeToUnix fix time from 1 jun 1970 to Unix timestamp
+func REFC868TimeToUnix(secondsLeft uint32) uint32 {
+	diff := then1970.Sub(then1900)
+	return secondsLeft - uint32(diff.Seconds())
+}
+
+func DialToTimeServer(address string) {
+	conn, err := net.Dial("tcp", address)
+	if err != nil {
+		log.Printf("error to connect: %s", err)
+	}
+
+	if _, err := fmt.Fprintf(conn, "GET / HTTP/1.0\r\n\r\n"); err != nil {
+		log.Printf("error: %s", err)
+	}
+
+	if status, _, err := bufio.NewReader(conn).ReadLine(); err != nil {
+		log.Println(err)
+	} else {
+		log.Println("respond: ", REFC868TimeToUnix(binary.BigEndian.Uint32(status)))
+	}
 }
