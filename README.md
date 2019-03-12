@@ -15,6 +15,6 @@ In terminal: `printf "%d\n" "0x$(nc time.nist.gov 37 | xxd -p)"` where `time.nis
 
 How to run client
 -----------------------------------
-`client -p 11037` arguments is necessary
+`client localhost 11037` arguments is necessary
 
 [How to format this file](http://webdesign.ru.net/article/pravila-oformleniya-fayla-readmemd-na-github.html)
