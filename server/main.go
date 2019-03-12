@@ -3,18 +3,10 @@
 package main
 
 import (
-	"encoding/binary"
-	"fmt"
 	"log"
-	"net"
 	"os"
+	"timeServer/server/srv"
 	"timeServer/utl"
-)
-
-
-const (
-	ConnHost = "localhost"
-	ConnType = "tcp"
 )
 
 func main() {
@@ -28,45 +20,6 @@ func main() {
 		return
 	}
 
-	l, err := net.Listen(ConnType, ConnHost+":"+port)
-	if err != nil {
-		fmt.Println("Error listening:", err.Error())
-		os.Exit(1)
-	}
-
-	// Close the listener when the application closes.
-	defer l.Close()
-	log.Println("Listening on " + ConnHost + ":" + port)
-
-	for {
-		// Listen for an incoming connection.
-		conn, err := l.Accept()
-
-		if err != nil {
-			log.Println("Error accepting: ", err.Error())
-			os.Exit(1)
-		}
-
-		// Handle connections in a new goroutine.
-		go handleRequest(conn)
-	}
+	// run server
+	srv.RunServer(port)
 }
-
-// Handles incoming requests.
-func handleRequest(conn net.Conn) {
-
-	//buf := make([]byte, 1024)
-	buf := make([]byte, 4)
-	_, err := conn.Read(buf)
-
-	if err != nil {
-		log.Println("Error reading:", err.Error())
-	}
-
-	binary.BigEndian.PutUint32(buf, utl.RFC868Time())
-
-	conn.Write(buf)
-
-	conn.Close()
-}
-

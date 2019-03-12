@@ -1,2 +1,20 @@
-Test task
+Time server RFC 868
 =====================
+
+Description
+-----------------------------------
+This program run time protocol server as described in [RFC 868](https://tools.ietf.org/html/rfc868)
+
+How to run
+-----------------------------------
+`server -p 11037` arguments is necessary
+
+How to test server
+-----------------------------------
+In terminal: `printf "%d\n" "0x$(nc time.nist.gov 37 | xxd -p)"` where `time.nist.gov 37` is address and server port.
+
+How to run client
+-----------------------------------
+`client -p 11037` arguments is necessary
+
+[How to format this file](http://webdesign.ru.net/article/pravila-oformleniya-fayla-readmemd-na-github.html)
