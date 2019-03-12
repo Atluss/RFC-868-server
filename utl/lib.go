@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"encoding/binary"
 	"fmt"
-	"log"
 	"net"
 	"strings"
 	"time"
@@ -77,19 +76,20 @@ func REFC868TimeToUnix(secondsLeft uint32) uint32 {
 	return secondsLeft - uint32(diff.Seconds())
 }
 
-func DialToTimeServer(address string) {
+func DialToTimeServer(address string) (string, error) {
 	conn, err := net.Dial("tcp", address)
 	if err != nil {
-		log.Printf("error to connect: %s", err)
+		return "", fmt.Errorf("error to connect: %s", err)
 	}
 
 	if _, err := fmt.Fprintf(conn, "GET / HTTP/1.0\r\n\r\n"); err != nil {
-		log.Printf("error: %s", err)
+		return "", fmt.Errorf("error: %s", err)
 	}
 
 	if status, _, err := bufio.NewReader(conn).ReadLine(); err != nil {
-		log.Println(err)
+		return "", err
 	} else {
-		log.Println("respond: ", REFC868TimeToUnix(binary.BigEndian.Uint32(status)))
+		str := fmt.Sprintf("respond: %d", REFC868TimeToUnix(binary.BigEndian.Uint32(status)))
+		return str, nil
 	}
 }

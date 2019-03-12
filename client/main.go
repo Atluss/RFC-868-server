@@ -23,7 +23,12 @@ func main() {
 
 	log.Printf("Address to connect: %s", address)
 	for {
-		utl.DialToTimeServer(address)
+		if str, err := utl.DialToTimeServer(address); err != nil {
+			log.Println(err)
+			return
+		} else {
+			log.Println(str)
+		}
 		time.Sleep(time.Second)
 	}
 

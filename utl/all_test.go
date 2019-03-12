@@ -43,5 +43,9 @@ func TestREFC868TimeToUnix(t *testing.T) {
 
 func TestDialToTimeServer(t *testing.T) {
 	address := "time.nist.gov:37"
-	DialToTimeServer(address)
+	if str, err := DialToTimeServer(address); err != nil {
+		log.Println("No Pass")
+	} else {
+		log.Printf("Pass, %s", str)
+	}
 }
