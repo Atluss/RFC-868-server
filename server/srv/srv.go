@@ -52,7 +52,11 @@ func handleRequest(conn net.Conn) {
 
 	binary.BigEndian.PutUint32(buf, utl.RFC868Time())
 
-	conn.Write(buf)
+	if _, err := conn.Write(buf); err != nil {
+		log.Println("error: can't write respond")
+	}
 
-	conn.Close()
+	if err := conn.Close(); err != nil {
+		log.Println("error: server can't close connection")
+	}
 }

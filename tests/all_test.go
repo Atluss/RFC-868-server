@@ -34,6 +34,24 @@ func TestCheckServerSettings(t *testing.T) {
 
 }
 
+func TestCheckClientSettings(t *testing.T) {
+	args := map[uint][]string{
+		0: {"localhost", "11037"},
+		1: {"", "asd"},
+		2: {"", "11037"},
+		3: {"", ""},
+	}
+
+	for _, m := range args {
+		if _, _, err := utl.CheckClientSettings(m); err != nil {
+			log.Println(m, " - not pass")
+		} else {
+			log.Println(m, " - pass")
+		}
+	}
+
+}
+
 func TestRFC868Time(t *testing.T) {
 	log.Println(utl.RFC868Time())
 }

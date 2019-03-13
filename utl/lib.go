@@ -18,6 +18,9 @@ const (
 var then1900 = time.Date(1900, time.January, 1, 0, 0, 1, 0, time.UTC)
 var then1970 = time.Date(1970, time.January, 1, 0, 0, 1, 0, time.UTC)
 
+// diffSec it's 2 208 988 800 but calculate for clarity
+var diffSec = uint32(then1970.Sub(then1900).Seconds())
+
 // DigitalOnly check symbols for a letters
 func DigitalOnly(s string) bool {
 	for _, char := range s {
@@ -72,8 +75,7 @@ func RFC868Time() uint32 {
 
 // REFC868TimeToUnix fix time from 1 jun 1970 to Unix timestamp
 func REFC868TimeToUnix(secondsLeft uint32) uint32 {
-	diff := then1970.Sub(then1900)
-	return secondsLeft - uint32(diff.Seconds())
+	return secondsLeft - diffSec
 }
 
 func DialToTimeServer(address string) (string, error) {
