@@ -1,16 +1,15 @@
-package tests
+package v1
 
 import (
 	"log"
 	"testing"
-	"timeServer/utl"
 )
 
 func TestAlphaOnly(t *testing.T) {
 	vals := []string{"aaa", "123123", "12sfd"}
 
 	for _, v := range vals {
-		log.Printf("%t", utl.DigitalOnly(v))
+		log.Printf("%t", DigitalOnly(v))
 	}
 }
 
@@ -25,7 +24,7 @@ func TestCheckServerSettings(t *testing.T) {
 	}
 
 	for _, m := range args {
-		if _, err := utl.CheckServerSettings(m); err != nil {
+		if _, err := CheckServerSettings(m); err != nil {
 			log.Println(m, " - not pass")
 		} else {
 			log.Println(m, " - pass")
@@ -43,7 +42,7 @@ func TestCheckClientSettings(t *testing.T) {
 	}
 
 	for _, m := range args {
-		if _, _, err := utl.CheckClientSettings(m); err != nil {
+		if _, _, err := CheckClientSettings(m); err != nil {
 			log.Println(m, " - not pass")
 		} else {
 			log.Println(m, " - pass")
@@ -53,16 +52,16 @@ func TestCheckClientSettings(t *testing.T) {
 }
 
 func TestRFC868Time(t *testing.T) {
-	log.Println(utl.RFC868Time())
+	log.Println(RFC868Time())
 }
 
 func TestREFC868TimeToUnix(t *testing.T) {
-	log.Println(utl.REFC868TimeToUnix(3761408855))
+	log.Println(REFC868TimeToUnix(3761408855))
 }
 
 func TestDialToTimeServer(t *testing.T) {
 	address := "time.nist.gov:37"
-	if str, err := utl.DialToTimeServer(address); err != nil {
+	if str, err := DialToTimeServer(address); err != nil {
 		log.Println("No Pass")
 	} else {
 		log.Printf("Pass, %s", str)

@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 	"time"
-	"timeServer/utl"
+	"timeServer/pkg/v1"
 )
 
 func main() {
@@ -14,7 +14,7 @@ func main() {
 	var err error
 
 	// validate program arguments
-	if url, port, err = utl.CheckClientSettings(os.Args[1:]); err != nil {
+	if url, port, err = v1.CheckClientSettings(os.Args[1:]); err != nil {
 		log.Println(err)
 		return
 	}
@@ -23,7 +23,7 @@ func main() {
 
 	log.Printf("Address to connect: %s", address)
 	for {
-		if str, err := utl.DialToTimeServer(address); err != nil {
+		if str, err := v1.DialToTimeServer(address); err != nil {
 			log.Println(err)
 			return
 		} else {

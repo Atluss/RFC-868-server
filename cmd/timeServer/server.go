@@ -1,4 +1,6 @@
-package srv
+// Server for RFC 868
+// Usage: run server -p 11037
+package main
 
 import (
 	"encoding/binary"
@@ -6,22 +8,33 @@ import (
 	"log"
 	"net"
 	"os"
-	"timeServer/utl"
+	"timeServer/pkg/v1"
 )
+
+func main() {
+	var port string
+	var err error
+	// validate program arguments
+	if port, err = v1.CheckServerSettings(os.Args[1:]); err != nil {
+		log.Println(err)
+		return
+	}
+	// run server
+	RunServer(port)
+}
 
 func RunServer(port string) {
 
-	address := fmt.Sprintf("%s:%s", utl.ConnHost, port)
+	address := fmt.Sprintf("%s:%s", v1.ConnHost, port)
 
-	l, err := net.Listen(utl.ConnType, address)
+	l, err := net.Listen(v1.ConnType, address)
 	if err != nil {
 		fmt.Printf("error: listening: %s", err.Error())
 		os.Exit(1)
 	}
 	defer l.Close()
 
-	log.Printf("listening on %s:%s", utl.ConnHost, port)
-
+	log.Printf("listening on %s:%s", v1.ConnHost, port)
 	for {
 		// Listen for an incoming connection.
 		conn, err := l.Accept()
@@ -50,7 +63,7 @@ func handleRequest(conn net.Conn) {
 		log.Println("error reading:", err.Error())
 	}
 
-	binary.BigEndian.PutUint32(buf, utl.RFC868Time())
+	binary.BigEndian.PutUint32(buf, v1.RFC868Time())
 
 	if _, err := conn.Write(buf); err != nil {
 		log.Println("error: can't write respond")
