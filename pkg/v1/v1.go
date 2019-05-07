@@ -10,9 +10,11 @@ import (
 )
 
 const (
-	alpha    = "abcdefghijklmnopqrstuvwxyz"
-	ConnHost = "localhost" // connection host
-	ConnType = "tcp"       // network type
+	alpha = "abcdefghijklmnopqrstuvwxyz"
+	// connection host
+	ConnHost = "localhost"
+	// network type
+	ConnType = "tcp"
 )
 
 var then1900 = time.Date(1900, time.January, 1, 0, 0, 1, 0, time.UTC)
