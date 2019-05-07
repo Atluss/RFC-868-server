@@ -11,9 +11,9 @@ import (
 
 const (
 	alpha = "abcdefghijklmnopqrstuvwxyz"
-	// connection host
+	// ConnHost connection host
 	ConnHost = "localhost"
-	// network type
+	// ConnType network type
 	ConnType = "tcp"
 )
 
