@@ -11,8 +11,8 @@ import (
 
 const (
 	alpha    = "abcdefghijklmnopqrstuvwxyz"
-	ConnHost = "localhost"
-	ConnType = "tcp"
+	ConnHost = "localhost" // connection host
+	ConnType = "tcp"       // network type
 )
 
 var then1900 = time.Date(1900, time.January, 1, 0, 0, 1, 0, time.UTC)
@@ -78,6 +78,7 @@ func REFC868TimeToUnix(secondsLeft uint32) uint32 {
 	return secondsLeft - diffSec
 }
 
+// DialToTimeServer make a dial to time server
 func DialToTimeServer(address string) (string, error) {
 	conn, err := net.Dial("tcp", address)
 	if err != nil {
@@ -89,12 +90,12 @@ func DialToTimeServer(address string) (string, error) {
 	}
 
 	buf := make([]byte, 4)
-
-	if status, _, err := bufio.NewReader(conn).ReadLine(); err != nil {
+	var status []byte
+	if status, _, err = bufio.NewReader(conn).ReadLine(); err != nil {
 		return "", err
-	} else {
-		copy(buf, status)
-		str := fmt.Sprintf("respond: %d", REFC868TimeToUnix(binary.BigEndian.Uint32(buf)))
-		return str, nil
 	}
+
+	copy(buf, status)
+	str := fmt.Sprintf("respond: %d", REFC868TimeToUnix(binary.BigEndian.Uint32(buf)))
+	return str, nil
 }

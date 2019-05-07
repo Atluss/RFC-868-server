@@ -20,10 +20,10 @@ func main() {
 		return
 	}
 	// run server
-	RunServer(port)
+	runServer(port)
 }
 
-func RunServer(port string) {
+func runServer(port string) {
 
 	address := fmt.Sprintf("%s:%s", v1.ConnHost, port)
 

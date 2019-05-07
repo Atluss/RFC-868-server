@@ -1,5 +1,6 @@
-## Time server RFC 868
+[![Go Report Card](https://goreportcard.com/badge/github.com/Atluss/RFC-868-server)](https://goreportcard.com/report/github.com/Atluss/RFC-868-server)
 
+## Time server RFC 868
 
 ### Description
 

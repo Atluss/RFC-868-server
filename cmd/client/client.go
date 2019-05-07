@@ -22,13 +22,13 @@ func main() {
 	address := fmt.Sprintf("%s:%s", url, port)
 
 	log.Printf("Address to connect: %s", address)
+	var str string
 	for {
-		if str, err := v1.DialToTimeServer(address); err != nil {
+		if str, err = v1.DialToTimeServer(address); err != nil {
 			log.Println(err)
 			return
-		} else {
-			log.Println(str)
 		}
+		log.Println(str)
 		time.Sleep(time.Second)
 	}
 
